@@ -20,14 +20,17 @@
   "rules": {
     "@typescript-eslint/lines-between-class-members": "off",
     "@typescript-eslint/no-throw-literal": "off",
-    "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-confusing-void-expression": "error",
     "@typescript-eslint/prefer-for-of": "off",
+    "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-misused-promises": [
       "error",
       { "checksVoidReturn": { "arguments": false } }
     ],
+    "no-underscore-dangle": "off",
+    "no-case-declarations":"off",
+    "max-classes-per-file": "off",
     "import/prefer-default-export": "off",
     "import/order": [
       "error",
