@@ -1,0 +1,52 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:promise/recommended",
+    "plugin:require-extensions/recommended",
+    "airbnb-base",
+    "airbnb-base-typescript",
+    "prettier"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "promise",
+    "unicorn",
+    "require-extensions"
+  ],
+  "rules": {
+    "@typescript-eslint/lines-between-class-members": "off",
+    "@typescript-eslint/no-throw-literal": "off",
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/no-confusing-void-expression": "error",
+    "@typescript-eslint/prefer-for-of": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      { "checksVoidReturn": { "arguments": false } }
+    ],
+    "import/prefer-default-export": "off",
+    "import/order": [
+      "error",
+      {
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "groups": [
+          "type",
+          "builtin",
+          "external",
+          "parent",
+          "sibling",
+          "index",
+          "object"
+        ]
+      }
+    ]
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json", "./tsconfig.test.json"]
+  }
+}
