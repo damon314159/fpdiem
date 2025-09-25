@@ -1,20 +1,33 @@
 import { Functor2 } from "./functor.js";
-import { URIS2, URItoKind2 } from "./hkt.js";
+import { HKT2, Kind2, URIS2 } from "./hkt.js";
 
 const eitherURI = "Either";
 type EitherURI = typeof eitherURI;
 
-declare module "./hkt" {
-  interface URItoKind2<E, A> {
-    readonly [eitherURI]: Either<E, A>;
+const mapURI = "map";
+type MapURI = typeof mapURI;
+
+class Map<E, A> {
+  readonly URI: MapURI = mapURI;
+  readonly value: Map<E, A>;
+
+  constructor(map: Map<E, A>) {
+    this.value = map;
   }
 }
 
-type L<E> = { _type: "left"; left: E };
-type R<A> = { _type: "right"; right: A };
-type Value<E, A> = L<E> | R<A>;
+declare module "./hkt" {
+  interface URItoKind2<E, A> {
+    readonly [eitherURI]: Either<E, A>;
+    readonly [mapURI]: Map<E, A>;
+  }
+}
 
-export class Either<E, A> implements Functor2<EitherURI> {
+type _E<E> = { _type: "left"; _E: E };
+type _A<A> = { _type: "right"; _A: A };
+type Value<E, A> = _E<E> | _A<A>;
+
+export class Either<E, A> {
   readonly URI: EitherURI = eitherURI;
   value: Value<E, A>;
 
@@ -22,54 +35,58 @@ export class Either<E, A> implements Functor2<EitherURI> {
     this.value = value;
   }
 
-  static of<A>(x: A): Right<A> {
+  static of<A>(x: A): Either<never, A> {
     return new Right(x);
   }
   readonly of = Either.of.bind(Either);
 
-  static map<E, A, B>(fa: Either<E, A>, f: (a: A) => B): Either<E, B> {
-    switch (fa.value._type) {
+  map<B>(f: (a: A) => B): Either<E, B> {
+    switch (this.value._type) {
       case "left":
-        return fa as Left<E>;
+        return this as unknown as Left<E>;
       case "right":
-        return Either.of(f(fa.value.right));
+        return Either.of(f(this.value._A));
       default:
-        const exhaustiveCheck: never = fa.value;
+        const exhaustiveCheck: never = this.value;
         return exhaustiveCheck; // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking
     }
-  }
-  readonly map = Either.map.bind(Either);
-}
-
-class Right<A> extends Either<never, A> {
-  constructor(x: A) {
-    super({ _type: "right", right: x });
   }
 }
 
 class Left<E> extends Either<E, never> {
   constructor(x: E) {
-    super({ _type: "left", left: x });
+    super({ _type: "left", _E: x });
+  }
+}
+
+class Right<A> extends Either<never, A> {
+  constructor(x: A) {
+    super({ _type: "right", _A: x });
   }
 }
 
 const functorInstances: {
   [K in URIS2]: Functor2<K>;
 } = {
-  Either: {
-    URI: "Either",
-    map: (fa, f) => Either.map(fa, f),
+  [eitherURI]: {
+    URI: eitherURI,
+    map: <E, A, B>(fa: HKT2<EitherURI, E, A>, f: (a: A) => B) =>
+      (fa as Either<E, A>).map(f),
+  },
+  map: {
+    URI: "map",
+    map: <E, A, B>(fa, f) => new Map<E, B>(fa) as unknown as HKT2<"map", E, B>, // mock map, doesn't matter
   },
 };
 
 function map2<E, A, B>(f: (a: A) => B) {
-  return <F extends URIS2>(fa: URItoKind2<E, A>[F]): URItoKind2<E, B>[F] => {
+  return <F extends URIS2>(fa: HKT2<F, E, A>): Kind2<F, E, B> => {
     const instance = functorInstances[fa.URI];
     return instance.map(fa, f);
   };
 }
 
-const mapper = map2((x: number) => `${2 * x}`);
-// mapper is correctly <F extends URIS2>(fa: URItoKind2<unknown, number>[F]) => URItoKind2<unknown, string>[F]
-const result = mapper(new Right(5));
-// result is correctly typed as Either<unknown, string>
+const double = map2((x: number) => `${2 * x}`);
+// double is <F extends URIS2>(fa: HKT2<F, unknown, number>) => Kind2<F, unknown, string>
+const result = double(new Right(5));
+// result is Either<unknown, string>

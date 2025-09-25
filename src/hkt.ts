@@ -36,30 +36,40 @@ SOFTWARE.
 /**
  * `* -> *` constructors
  */
-export interface HKT<URI, A> {
-  readonly _URI: URI;
-  readonly _A: A;
+export interface HKT<URI extends URIS, A> {
+  readonly URI: URI;
+  readonly value: { _type: string; _A: A };
 }
 
 /**
  * `* -> * -> *` constructors
  */
-export interface HKT2<URI, E, A> extends HKT<URI, A> {
-  readonly _E: E;
+export interface HKT2<URI extends URIS2, E, A> {
+  readonly URI: URI;
+  readonly value: { _type: string; _E: E } | { _type: string; _A: A };
 }
 
 /**
  * `* -> * -> * -> *` constructors
  */
-export interface HKT3<URI, R, E, A> extends HKT2<URI, E, A> {
-  readonly _R: R;
+export interface HKT3<URI extends URIS3, R, E, A> {
+  readonly URI: URI;
+  readonly value:
+    | { _type: string; _R: R }
+    | { _type: string; _E: E }
+    | { _type: string; _A: A };
 }
 
 /**
  * `* -> * -> * -> * -> *` constructors
  */
-export interface HKT4<URI, S, R, E, A> extends HKT3<URI, R, E, A> {
-  readonly _S: S;
+export interface HKT4<URI extends URIS4, S, R, E, A> {
+  readonly URI: URI;
+  readonly value:
+    | { _type: string; _S: S }
+    | { _type: string; _R: R }
+    | { _type: string; _E: E }
+    | { _type: string; _A: A };
 }
 
 //
