@@ -38,7 +38,6 @@ export class Either<E, A> {
   static of<A>(x: A): Either<never, A> {
     return new Right(x);
   }
-  readonly of = Either.of.bind(Either);
 
   map<B>(f: (a: A) => B): Either<E, B> {
     switch (this.value._type) {
@@ -65,28 +64,30 @@ class Right<A> extends Either<never, A> {
   }
 }
 
-const functorInstances: {
-  [K in URIS2]: Functor2<K>;
-} = {
+type Functor2URIS = URIS2 & (EitherURI | MapURI);
+type Functor2Instances = {
+  [K in Functor2URIS]: Functor2<K>;
+};
+const functor2Instances: Functor2Instances = {
+  // [mapURI]: {
+  //   URI: mapURI,
+  //   map: <E, A, B>(fa, f) => new Map<E, B>(fa) as unknown as HKT2<"map", E, B>, // mock map, doesn't matter
+  // },
   [eitherURI]: {
     URI: eitherURI,
     map: <E, A, B>(fa: HKT2<EitherURI, E, A>, f: (a: A) => B) =>
       (fa as Either<E, A>).map(f),
   },
-  map: {
-    URI: "map",
-    map: <E, A, B>(fa, f) => new Map<E, B>(fa) as unknown as HKT2<"map", E, B>, // mock map, doesn't matter
-  },
-};
+} satisfies Functor2Instances;
 
 function map2<E, A, B>(f: (a: A) => B) {
-  return <F extends URIS2>(fa: HKT2<F, E, A>): Kind2<F, E, B> => {
-    const instance = functorInstances[fa.URI];
+  return <F extends Functor2URIS>(fa: HKT2<F, E, A>): Kind2<F, E, B> => {
+    const instance = functor2Instances[fa.URI];
     return instance.map(fa, f);
   };
 }
 
 const double = map2((x: number) => `${2 * x}`);
-// double is <F extends URIS2>(fa: HKT2<F, unknown, number>) => Kind2<F, unknown, string>
+// double is <F extends Functor2URIS>(fa: HKT2<F, unknown, number>) => Kind2<F, unknown, string>
 const result = double(new Right(5));
 // result is Either<unknown, string>
