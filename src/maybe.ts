@@ -77,6 +77,18 @@ export class Maybe<A> {
         return exhaustiveCheck;
     }
   }
+
+  join<A_>(this: Maybe<Maybe<A_>>): Maybe<A_> {
+    switch (this.#value._type) {
+      case "none":
+        return this as Maybe<A_>;
+      case "some":
+        return this.#value._A;
+      default:
+        const exhaustiveCheck: never = this.#value;
+        return exhaustiveCheck;
+    }
+  }
 }
 
 export class Some<A> extends Maybe<A> {

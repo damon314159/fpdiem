@@ -82,6 +82,18 @@ export class Either<E, A> {
         return exhaustiveCheck;
     }
   }
+
+  join<E_, A_>(this: Either<E_, Either<E_, A_>>): Either<E_, A_> {
+    switch (this.#value._type) {
+      case "left":
+        return this as unknown as Left<E_>;
+      case "right":
+        return this.#value._A;
+      default:
+        const exhaustiveCheck: never = this.#value;
+        return exhaustiveCheck;
+    }
+  }
 }
 
 export class Left<E> extends Either<E, never> {

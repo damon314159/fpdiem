@@ -42,6 +42,10 @@ export class Identity<A> {
   flatMap<B>(f: (a: A) => Identity<B>): Identity<B> {
     return f(this.#value._A);
   }
+
+  join<A_>(this: Identity<Identity<A_>>): Identity<A_> {
+    return this.#value._A;
+  }
 }
 
 export const identityFunctor: Functor1<IdentityURI> = {

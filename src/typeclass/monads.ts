@@ -67,21 +67,6 @@ export const monadInstances: MonadInstances = {
   ...monad4Instances,
 } satisfies MonadInstances;
 
-export type Mapper1<A, B> = <F extends Monad1URIS>(fa: HKT<F, A>) => Kind<F, B>;
-export type Mapper2<A, B> = <F extends Monad2URIS, E>(
-  fa: HKT2<F, E, A>,
-) => Kind2<F, E, B>;
-export type Mapper3<A, B> = <F extends Monad3URIS, R, E>(
-  fa: HKT3<F, R, E, A>,
-) => Kind3<F, R, E, B>;
-export type Mapper4<A, B> = <F extends Monad4URIS, S, R, E>(
-  fa: HKT4<F, S, R, E, A>,
-) => Kind4<F, S, R, E, B>;
-export type Mapper<A, B> = Mapper1<A, B> &
-  Mapper2<A, B> &
-  Mapper3<A, B> &
-  Mapper4<A, B>;
-
 // prettier-ignore
 export type FlatMap<F extends MonadURIS, S, R, E, A, B> =
   F extends Monad1URIS ? (a: A) => Kind<F, B> :
