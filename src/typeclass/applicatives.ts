@@ -72,6 +72,27 @@ export const applicativeInstances: ApplicativeInstances = {
   ...applicative4Instances,
 } satisfies ApplicativeInstances;
 
+// prettier-ignore
+export type Applicable<F extends ApplicativeURIS, S, R, E, A, B> =
+  F extends Applicative1URIS ? HKT<F, (a: A) => B> :
+  F extends Applicative2URIS ? HKT2<F, E, (a: A) => B> :
+  F extends Applicative3URIS ? HKT3<F, R, E, (a: A) => B> :
+  F extends Applicative4URIS ? HKT4<F, S, R, E, (a: A) => B> : never
+
+// prettier-ignore
+export type ApplicableTo<F extends ApplicativeURIS, S, R, E, A> =
+  F extends Applicative1URIS ? HKT<F, A> :
+  F extends Applicative2URIS ? HKT2<F, E, A> :
+  F extends Applicative3URIS ? HKT3<F, R, E, A> :
+  F extends Applicative4URIS ? HKT4<F, S, R, E, A> : never
+
+// prettier-ignore
+export type ApplicableResult<F extends ApplicativeURIS, S, R, E, B> =
+  F extends Applicative1URIS ? Kind<F, B> :
+  F extends Applicative2URIS ? Kind2<F, E, B> :
+  F extends Applicative3URIS ? Kind3<F, R, E, B> :
+  F extends Applicative4URIS ? Kind4<F, S, R, E, B> : never
+
 export function ap<F extends Applicative1URIS, A, B>(
   ff: HKT<F, (a: A) => B>,
 ): (fa: HKT<F, A>) => Kind<F, B>;
@@ -85,30 +106,17 @@ export function ap<F extends Applicative4URIS, S, R, E, A, B>(
   ff: HKT4<F, S, R, E, (a: A) => B>,
 ): (fa: HKT4<F, S, R, E, A>) => Kind4<F, S, R, E, B>;
 
+// function ap(ff) { return (fa) => applicativeInstances[fa.URI].ap(ff, fa) }
 export function ap<F extends ApplicativeURIS, S, R, E, A, B>(
-  // prettier-ignore
-  ff: F extends Applicative1URIS ? HKT<F, (a: A) => B> :
-      F extends Applicative2URIS ? HKT2<F, E, (a: A) => B> :
-      F extends Applicative3URIS ? HKT3<F, R, E, (a: A) => B> :
-      F extends Applicative4URIS ? HKT4<F, S, R, E, (a: A) => B> : never,
+  ff: Applicable<F, S, R, E, A, B>,
 ) {
-  return ((fa: { URI: F }) => {
+  return (fa: ApplicableTo<F, S, R, E, A>): ApplicableResult<F, S, R, E, B> => {
     const instance = applicativeInstances[fa.URI];
-    // prettier-ignore
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (instance.ap as (ff: any, fa: any) => 
-      F extends Applicative1URIS ? Kind<F, B> :
-      F extends Applicative2URIS ? Kind2<F, E, B> :
-      F extends Applicative3URIS ? Kind3<F, R, E, B> :
-      F extends Applicative4URIS ? Kind4<F, S, R, E, B> : never
+    return (
+      instance.ap as unknown as (
+        ff: Applicable<F, S, R, E, A, B>,
+        fa: ApplicableTo<F, S, R, E, A>,
+      ) => ApplicableResult<F, S, R, E, B>
     )(ff, fa);
-  }) as F extends Applicative1URIS
-    ? (fa: HKT<F, A>) => Kind<F, B>
-    : F extends Applicative2URIS
-      ? (fa: HKT2<F, E, A>) => Kind2<F, E, B>
-      : F extends Applicative3URIS
-        ? (fa: HKT3<F, R, E, A>) => Kind3<F, R, E, B>
-        : F extends Applicative4URIS
-          ? (fa: HKT4<F, S, R, E, A>) => Kind4<F, S, R, E, B>
-          : never;
+  };
 }
