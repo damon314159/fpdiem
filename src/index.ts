@@ -9,3 +9,4 @@ export * from "./datatypes/either.js";
 export * from "./datatypes/maybe.js";
 export * from "./datatypes/identity.js";
 export * from "./datatypes/list.js";
+export * from "./functions.js";
