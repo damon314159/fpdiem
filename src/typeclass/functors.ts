@@ -1,5 +1,4 @@
-import { eitherFunctor, eitherURI, EitherURI } from "./either.js";
-import { Functor1, Functor2, Functor3, Functor4 } from "./functor-typeclass.js";
+import { eitherFunctor, eitherURI, EitherURI } from "../either.js";
 import {
   HKT,
   HKT2,
@@ -13,10 +12,11 @@ import {
   URIS2,
   URIS3,
   URIS4,
-} from "./hkt.js";
-import { identityFunctor, identityURI, IdentityURI } from "./identity.js";
-import { listFunctor, listURI, ListURI } from "./list.js";
-import { maybeFunctor, maybeURI, MaybeURI } from "./maybe.js";
+} from "../hkt.js";
+import { identityFunctor, identityURI, IdentityURI } from "../identity.js";
+import { listFunctor, listURI, ListURI } from "../list.js";
+import { maybeFunctor, maybeURI, MaybeURI } from "../maybe.js";
+import { Functor1, Functor2, Functor3, Functor4 } from "./functor-tc.js";
 
 export type Functor1URIS = URIS & (IdentityURI | ListURI | MaybeURI);
 export type Functor1Instances = {

@@ -1,5 +1,7 @@
-import { Functor2 } from "./functor-typeclass.js";
 import { HKT2 } from "./hkt.js";
+import { Applicative2 } from "./typeclass/applicative-tc.js";
+import { Functor2 } from "./typeclass/functor-tc.js";
+import { Monad2 } from "./typeclass/monad-tc.js";
 
 export const eitherURI = "Either";
 export type EitherURI = typeof eitherURI;
@@ -53,6 +55,33 @@ export class Either<E, A> {
         return exhaustiveCheck;
     }
   }
+
+  ap<E_, A_, B>(
+    this: Either<E_, (a: A_) => B>,
+    fa: Either<E_, A_>,
+  ): Either<E_, B> {
+    switch (this.#value._type) {
+      case "left":
+        return this as unknown as Left<E_>;
+      case "right":
+        return fa.map(this.#value._A);
+      default:
+        const exhaustiveCheck: never = this.#value;
+        return exhaustiveCheck;
+    }
+  }
+
+  flatMap<B>(f: (a: A) => Either<E, B>): Either<E, B> {
+    switch (this.#value._type) {
+      case "left":
+        return this as unknown as Left<E>;
+      case "right":
+        return f(this.#value._A);
+      default:
+        const exhaustiveCheck: never = this.#value;
+        return exhaustiveCheck;
+    }
+  }
 }
 
 export class Left<E> extends Either<E, never> {
@@ -71,4 +100,19 @@ export const eitherFunctor: Functor2<EitherURI> = {
   URI: eitherURI,
   map: <E, A, B>(fa: HKT2<EitherURI, E, A>, f: (a: A) => B) =>
     (fa as Either<E, A>).map(f),
+};
+
+export const eitherApplicative: Applicative2<EitherURI> = {
+  ...eitherFunctor,
+  of: Either.of.bind(Either),
+  ap: <E, A, B>(
+    ff: HKT2<EitherURI, E, (a: A) => B>,
+    fa: HKT2<EitherURI, E, A>,
+  ) => (ff as Either<E, (a: A) => B>).ap(fa as Either<E, A>),
+};
+
+export const eitherMonad: Monad2<EitherURI> = {
+  ...eitherApplicative,
+  flatMap: <E, A, B>(fa: HKT2<EitherURI, E, A>, f: (a: A) => Either<E, B>) =>
+    (fa as Either<E, A>).flatMap(f),
 };

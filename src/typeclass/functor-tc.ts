@@ -11,7 +11,7 @@ import {
   URIS2,
   URIS3,
   URIS4,
-} from "./hkt.js";
+} from "../hkt.js";
 
 export interface Functor1<F extends URIS> {
   readonly URI: F;
