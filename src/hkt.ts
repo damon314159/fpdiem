@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
@@ -38,7 +39,6 @@ SOFTWARE.
  */
 export interface HKT<URI extends URIS, A> {
   readonly URI: URI;
-  readonly value: { _type: string; _A: A };
 }
 
 /**
@@ -46,7 +46,6 @@ export interface HKT<URI extends URIS, A> {
  */
 export interface HKT2<URI extends URIS2, E, A> {
   readonly URI: URI;
-  readonly value: { _type: string; _E: E } | { _type: string; _A: A };
 }
 
 /**
@@ -54,10 +53,6 @@ export interface HKT2<URI extends URIS2, E, A> {
  */
 export interface HKT3<URI extends URIS3, R, E, A> {
   readonly URI: URI;
-  readonly value:
-    | { _type: string; _R: R }
-    | { _type: string; _E: E }
-    | { _type: string; _A: A };
 }
 
 /**
@@ -65,11 +60,6 @@ export interface HKT3<URI extends URIS3, R, E, A> {
  */
 export interface HKT4<URI extends URIS4, S, R, E, A> {
   readonly URI: URI;
-  readonly value:
-    | { _type: string; _S: S }
-    | { _type: string; _R: R }
-    | { _type: string; _E: E }
-    | { _type: string; _A: A };
 }
 
 //
@@ -79,25 +69,21 @@ export interface HKT4<URI extends URIS4, S, R, E, A> {
 /**
  * `* -> *` constructors
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface URItoKind<A> {}
 
 /**
  * `* -> * -> *` constructors
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface URItoKind2<E, A> {}
 
 /**
  * `* -> * -> * -> *` constructors
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface URItoKind3<R, E, A> {}
 
 /**
  * `* -> * -> * -> * -> *` constructors
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface URItoKind4<S, R, E, A> {}
 
 //

@@ -16,7 +16,7 @@ type Value<E, A> = _E<E> | _A<A>;
 
 export class Either<E, A> {
   readonly URI: EitherURI = eitherURI;
-  value: Value<E, A>;
+  readonly value: Value<E, A>;
 
   constructor(value: Value<E, A>) {
     this.value = value;
