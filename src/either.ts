@@ -16,25 +16,41 @@ type Value<E, A> = _E<E> | _A<A>;
 
 export class Either<E, A> {
   readonly URI: EitherURI = eitherURI;
-  readonly value: Value<E, A>;
+  readonly #value: Value<E, A>;
 
   constructor(value: Value<E, A>) {
-    this.value = value;
+    this.#value = value;
   }
 
   static of<A>(x: A): Either<never, A> {
     return new Right(x);
   }
 
+  equals(other: Either<unknown, unknown>): boolean {
+    switch (this.#value._type) {
+      case "left":
+        return (
+          other.#value._type === "left" && this.#value._E === other.#value._E
+        );
+      case "right":
+        return (
+          other.#value._type === "right" && this.#value._A === other.#value._A
+        );
+      default:
+        const exhaustiveCheck: never = this.#value;
+        return exhaustiveCheck; // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking
+    }
+  }
+
   map<B>(f: (a: A) => B): Either<E, B> {
-    switch (this.value._type) {
+    switch (this.#value._type) {
       case "left":
         return this as unknown as Left<E>;
       case "right":
-        return Either.of(f(this.value._A));
+        return Either.of(f(this.#value._A));
       default:
-        const exhaustiveCheck: never = this.value;
-        return exhaustiveCheck; // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking
+        const exhaustiveCheck: never = this.#value;
+        return exhaustiveCheck;
     }
   }
 }

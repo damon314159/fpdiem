@@ -16,24 +16,38 @@ type Value<A> = _A<A> | _None;
 
 export class Maybe<A> {
   readonly URI: MaybeURI = maybeURI;
-  value: Value<A>;
+  readonly #value: Value<A>;
 
   constructor(value: Value<A>) {
-    this.value = value;
+    this.#value = value;
   }
 
   static of<A>(x: A): Maybe<A> {
     return new Some(x);
   }
 
+  equals(other: Maybe<unknown>): boolean {
+    switch (this.#value._type) {
+      case "some":
+        return (
+          other.#value._type === "some" && this.#value._A === other.#value._A
+        );
+      case "none":
+        return other.#value._type === "none";
+      default:
+        const exhaustiveCheck: never = this.#value;
+        return exhaustiveCheck; // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking
+    }
+  }
+
   map<B>(f: (a: A) => B): Maybe<B> {
-    switch (this.value._type) {
+    switch (this.#value._type) {
       case "none":
         return this as unknown as Maybe<B>;
       case "some":
-        return Maybe.of(f(this.value._A));
+        return Maybe.of(f(this.#value._A));
       default:
-        const exhaustiveCheck: never = this.value;
+        const exhaustiveCheck: never = this.#value;
         return exhaustiveCheck;
     }
   }

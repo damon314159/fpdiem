@@ -15,10 +15,10 @@ type Value<A> = _A<A>;
 
 export class List<A> {
   readonly URI: ListURI = listURI;
-  readonly value: Value<A>;
+  readonly #value: Value<A>;
 
   constructor(value: Value<A>) {
-    this.value = value;
+    this.#value = value;
   }
 
   static of<A>(x: A): List<A> {
@@ -33,8 +33,15 @@ export class List<A> {
     return List.from([]);
   }
 
+  equals(other: List<unknown>): boolean {
+    return (
+      this.#value._A.length === other.#value._A.length &&
+      this.#value._A.every((a, index) => a === other.#value._A[index])
+    );
+  }
+
   map<B>(f: (a: A) => B): List<B> {
-    return List.from(this.value._A.map(f));
+    return List.from(this.#value._A.map(f));
   }
 }
 
