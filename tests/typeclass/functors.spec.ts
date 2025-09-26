@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { Either, Left } from "../../src/either.js";
-import { Identity } from "../../src/identity.js";
-import { List } from "../../src/list.js";
-import { Maybe, None } from "../../src/maybe.js";
+import { Either, Left } from "../../src/datatypes/either.js";
+import { Identity } from "../../src/datatypes/identity.js";
+import { List } from "../../src/datatypes/list.js";
+import { Maybe, None } from "../../src/datatypes/maybe.js";
 import { map } from "../../src/typeclass/functors.js";
 
 describe("Functors module", () => {

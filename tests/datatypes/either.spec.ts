@@ -6,7 +6,7 @@ import {
   eitherFunctor,
   eitherApplicative,
   eitherMonad,
-} from "../src/either.js";
+} from "../../src/datatypes/either.js";
 
 const identity = <T>(x: T): T => x;
 const double = (x: number): number => x * 2;

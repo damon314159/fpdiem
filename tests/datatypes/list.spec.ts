@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { List, listFunctor, listApplicative, listMonad } from "../src/list.js";
+import {
+  List,
+  listFunctor,
+  listApplicative,
+  listMonad,
+} from "../../src/datatypes/list.js";
 
 // Helper functions for testing
 const identity = <T>(x: T): T => x;

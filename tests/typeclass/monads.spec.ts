@@ -1,8 +1,13 @@
 import { describe, it, expect } from "vitest";
-import { Either, eitherMonad, EitherURI, Left } from "../../src/either.js";
-import { Identity, IdentityURI } from "../../src/identity.js";
-import { List, ListURI } from "../../src/list.js";
-import { Maybe, MaybeURI, None } from "../../src/maybe.js";
+import {
+  Either,
+  eitherMonad,
+  EitherURI,
+  Left,
+} from "../../src/datatypes/either.js";
+import { Identity, IdentityURI } from "../../src/datatypes/identity.js";
+import { List, ListURI } from "../../src/datatypes/list.js";
+import { Maybe, MaybeURI, None } from "../../src/datatypes/maybe.js";
 import { flatMap, monadInstances } from "../../src/typeclass/monads.js";
 
 describe("Monads module", () => {

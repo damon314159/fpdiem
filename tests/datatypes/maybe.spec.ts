@@ -6,7 +6,7 @@ import {
   maybeFunctor,
   maybeApplicative,
   maybeMonad,
-} from "../src/maybe.js";
+} from "../../src/datatypes/maybe.js";
 
 // Helper functions for testing
 const identity = <T>(x: T): T => x;

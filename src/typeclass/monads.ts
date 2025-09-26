@@ -1,4 +1,11 @@
-import { eitherMonad, eitherURI, EitherURI } from "../either.js";
+import { eitherMonad, eitherURI, EitherURI } from "../datatypes/either.js";
+import {
+  identityMonad,
+  identityURI,
+  IdentityURI,
+} from "../datatypes/identity.js";
+import { listMonad, listURI, ListURI } from "../datatypes/list.js";
+import { maybeMonad, maybeURI, MaybeURI } from "../datatypes/maybe.js";
 import {
   HKT,
   HKT2,
@@ -13,9 +20,6 @@ import {
   URIS3,
   URIS4,
 } from "../hkt.js";
-import { identityMonad, identityURI, IdentityURI } from "../identity.js";
-import { listMonad, listURI, ListURI } from "../list.js";
-import { maybeMonad, maybeURI, MaybeURI } from "../maybe.js";
 import { Monad1, Monad2, Monad3, Monad4 } from "./monad-tc.js";
 
 export type Monad1URIS = URIS & (IdentityURI | ListURI | MaybeURI);

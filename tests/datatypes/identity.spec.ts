@@ -4,7 +4,7 @@ import {
   identityFunctor,
   identityApplicative,
   identityMonad,
-} from "../src/identity.js";
+} from "../../src/datatypes/identity.js";
 
 // Helper functions for testing
 const identity = <T>(x: T): T => x;

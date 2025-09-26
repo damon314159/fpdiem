@@ -1,4 +1,15 @@
-import { eitherApplicative, eitherURI, EitherURI } from "../either.js";
+import {
+  eitherApplicative,
+  eitherURI,
+  EitherURI,
+} from "../datatypes/either.js";
+import {
+  identityApplicative,
+  identityURI,
+  IdentityURI,
+} from "../datatypes/identity.js";
+import { listApplicative, listURI, ListURI } from "../datatypes/list.js";
+import { maybeApplicative, maybeURI, MaybeURI } from "../datatypes/maybe.js";
 import {
   HKT,
   HKT2,
@@ -13,9 +24,6 @@ import {
   URIS3,
   URIS4,
 } from "../hkt.js";
-import { identityApplicative, identityURI, IdentityURI } from "../identity.js";
-import { listApplicative, listURI, ListURI } from "../list.js";
-import { maybeApplicative, maybeURI, MaybeURI } from "../maybe.js";
 import {
   Applicative1,
   Applicative2,

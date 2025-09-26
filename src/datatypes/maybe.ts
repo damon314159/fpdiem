@@ -1,12 +1,12 @@
-import { HKT } from "./hkt.js";
-import { Applicative1 } from "./typeclass/applicative-tc.js";
-import { Functor1 } from "./typeclass/functor-tc.js";
-import { Monad1 } from "./typeclass/monad-tc.js";
+import { HKT } from "../hkt.js";
+import { Applicative1 } from "../typeclass/applicative-tc.js";
+import { Functor1 } from "../typeclass/functor-tc.js";
+import { Monad1 } from "../typeclass/monad-tc.js";
 
 export const maybeURI = "Maybe";
 export type MaybeURI = typeof maybeURI;
 
-declare module "./hkt" {
+declare module "../hkt" {
   interface URItoKind<A> {
     readonly [maybeURI]: Maybe<A>;
   }

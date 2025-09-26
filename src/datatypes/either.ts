@@ -1,12 +1,12 @@
-import { HKT2 } from "./hkt.js";
-import { Applicative2 } from "./typeclass/applicative-tc.js";
-import { Functor2 } from "./typeclass/functor-tc.js";
-import { Monad2 } from "./typeclass/monad-tc.js";
+import { HKT2 } from "../hkt.js";
+import { Applicative2 } from "../typeclass/applicative-tc.js";
+import { Functor2 } from "../typeclass/functor-tc.js";
+import { Monad2 } from "../typeclass/monad-tc.js";
 
 export const eitherURI = "Either";
 export type EitherURI = typeof eitherURI;
 
-declare module "./hkt" {
+declare module "../hkt" {
   interface URItoKind2<E, A> {
     readonly [eitherURI]: Either<E, A>;
   }
